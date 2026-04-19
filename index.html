@@ -30,6 +30,7 @@
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
+            --star-color: #ffffff;
         }
 
         [data-theme="light"] {
@@ -45,6 +46,7 @@
             --border-color: rgba(0, 0, 0, 0.1);
             --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(0, 0, 0, 0.05);
+            --star-color: #3b82f6;
         }
 
         * {
@@ -111,9 +113,10 @@
 
         .star {
             position: absolute;
-            background: white;
+            background: var(--star-color);
             border-radius: 50%;
             opacity: 0;
+            filter: drop-shadow(0 0 2px var(--star-color));
             animation: twinkle var(--duration) ease-in-out infinite var(--delay);
         }
 
@@ -1268,18 +1271,18 @@
 
         function createStars() {
             const container = document.getElementById('stars-container');
-            const starCount = 150;
+            const starCount = 500; // Even more intense
             
             for (let i = 0; i < starCount; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 
-                const size = Math.random() * 2 + 1;
+                const size = Math.random() * 3 + 0.5;
                 const top = Math.random() * 100;
                 const left = Math.random() * 100;
-                const duration = Math.random() * 3 + 2;
+                const duration = Math.random() * 1.5 + 1; // Faster for more "dynamic" feel
                 const delay = Math.random() * 5;
-                const opacity = Math.random() * 0.5 + 0.3;
+                const opacity = Math.random() * 0.8 + 0.2;
                 
                 star.style.width = `${size}px`;
                 star.style.height = `${size}px`;
