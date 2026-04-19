@@ -730,6 +730,75 @@
                 font-size: 1.5rem;
             }
         }
+
+        /* Modal Styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 2rem;
+            border-radius: 24px;
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent-primary);
+            transform: rotate(90deg);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -745,6 +814,7 @@
             
             <ul class="nav-links">
                 <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#education" class="nav-link">Education</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
@@ -797,6 +867,11 @@
                         <p>
                             Being at the intersection of traditional engineering and cutting-edge data science, I am driven to build intelligent systems that solve real-world problems. I am a builder at heart and a leader in practice.
                         </p>
+
+                        <blockquote style="border-left: 4px solid var(--accent-primary); padding-left: 1rem; margin: 2rem 0; font-style: italic; color: var(--text-main); background: var(--glass-bg); padding: 1.5rem; border-radius: 0 16px 16px 0;">
+                            "First, solve the problem. Then, write the code."
+                            <footer style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-dim);">— John Johnson</footer>
+                        </blockquote>
                         
                         <div class="highlight-cards">
                             <div class="highlight-card">
@@ -814,8 +889,8 @@
                         </div>
 
                         <div style="margin-top: 2rem;">
-                            <a href="#" class="btn btn-outline">
-                                <i class="fa-solid fa-download"></i> Download Resume
+                            <a href="resume.jpg" target="_blank" class="btn btn-outline">
+                                <i class="fa-solid fa-file-invoice"></i> View Resume
                             </a>
                         </div>
                     </div>
@@ -823,6 +898,60 @@
                     <div class="about-visual">
                         <div class="decorative-card">
                             <img src="profile.jpg" alt="Aastha Jha" class="profile-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Modal -->
+        <div id="resume-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <img src="resume.jpg" alt="Aastha Jha Resume" class="modal-image">
+                <div class="modal-actions">
+                    <a href="resume.jpg" download class="btn btn-primary">
+                        <i class="fa-solid fa-download"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <section id="education">
+            <div class="container">
+                <div class="section-header">
+                    <span class="hero-greeting">Academic Journey</span>
+                    <h2>Educational Background</h2>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-group">
+                        <h3><i class="fa-solid fa-graduation-cap"></i> Higher Education</h3>
+                        <div class="project-card" style="margin-bottom: 1.5rem; padding: 1.5rem; flex-direction: column; align-items: flex-start;">
+                            <h3 style="margin-bottom: 0.5rem;">B.Tech — CSE (AI & ML)</h3>
+                            <p style="margin-bottom: 1rem; color: var(--text-dim);">Manav Rachna University, New Delhi | 2025 – 2029</p>
+                            <div class="tech-pills">
+                                <span class="tech-pill" style="color: var(--accent-primary); border: 1px solid var(--accent-primary);">SGPA: 7.71 / 10</span>
+                                <span class="tech-pill">1st Year</span>
+                            </div>
+                        </div>
+                        <div class="project-card" style="padding: 1.5rem; flex-direction: column; align-items: flex-start;">
+                            <h3 style="margin-bottom: 0.5rem;">BSc — Data Science & Applications</h3>
+                            <p style="margin-bottom: 1rem; color: var(--text-dim);">IIT Madras (Online Degree) | 2025 – 2029</p>
+                            <div class="tech-pills">
+                                <span class="tech-pill">1st Year</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h3><i class="fa-solid fa-school"></i> Schooling</h3>
+                        <div class="project-card" style="padding: 1.5rem; flex-direction: column; align-items: flex-start;">
+                            <h3 style="margin-bottom: 0.5rem;">Class 12th — CBSE</h3>
+                            <p style="margin-bottom: 1rem; color: var(--text-dim);">Laxman Public School, New Delhi | 2025</p>
+                            <div class="tech-pills">
+                                <span class="tech-pill">Science Stream</span>
+                                <span class="tech-pill">Passout</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1163,6 +1292,36 @@
                 navLinksContainer.style.borderBottom = '1px solid var(--glass-border)';
             }
         });
+
+        // Resume Modal Logic
+        const resumeModal = document.getElementById('resume-modal');
+        const viewResumeBtn = document.querySelector('a[href="resume.jpg"]');
+        const closeModal = document.querySelector('.close-modal');
+
+        if (viewResumeBtn) {
+            viewResumeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                resumeModal.style.display = 'flex';
+                setTimeout(() => resumeModal.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden'; 
+            });
+        }
+
+        function hideModal() {
+            resumeModal.classList.remove('show');
+            setTimeout(() => resumeModal.style.display = 'none', 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        if (closeModal) {
+            closeModal.addEventListener('click', hideModal);
+        }
+
+        if (resumeModal) {
+            resumeModal.addEventListener('click', (e) => {
+                if (e.target === resumeModal) hideModal();
+            });
+        }
     </script>
 </body>
 </html>
