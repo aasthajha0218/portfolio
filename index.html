@@ -125,6 +125,16 @@
             50% { opacity: var(--opacity); transform: scale(1.2); }
         }
 
+        #star-stream-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
         h1, h2, h3, .logo {
             font-family: 'Syne', sans-serif;
             font-weight: 700;
@@ -831,6 +841,7 @@
         <div class="mesh-gradient"></div>
         <div class="noise-texture"></div>
         <div class="stars-container" id="stars-container"></div>
+        <canvas id="star-stream-canvas"></canvas>
     </div>
 
     <nav id="navbar">
@@ -1377,6 +1388,103 @@
                 if (e.target === resumeModal) hideModal();
             });
         }
+
+        // Dynamic Starry Stream Logic
+        const starCanvas = document.getElementById('star-stream-canvas');
+        const starCtx = starCanvas.getContext('2d');
+        let streamParticles = [];
+
+        function resizeStarCanvas() {
+            starCanvas.width = window.innerWidth;
+            starCanvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeStarCanvas);
+        resizeStarCanvas();
+
+        class StarStreamParticle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = (Math.random() * 1.5) - 0.75;
+                this.speedY = (Math.random() * 1.5) - 0.75;
+                this.opacity = 1;
+                this.fadeSpeed = Math.random() * 0.015 + 0.005;
+                this.color = color;
+            }
+
+            draw() {
+                starCtx.fillStyle = this.color;
+                starCtx.globalAlpha = this.opacity;
+                starCtx.beginPath();
+                starCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                starCtx.fill();
+                
+                // Subtle glow
+                starCtx.shadowBlur = 8;
+                starCtx.shadowColor = this.color;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.opacity > 0) {
+                    this.opacity -= this.fadeSpeed;
+                }
+            }
+        }
+
+        function handleStreamParticles() {
+            for (let i = 0; i < streamParticles.length; i++) {
+                streamParticles[i].update();
+                streamParticles[i].draw();
+                if (streamParticles[i].opacity <= 0) {
+                    streamParticles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function getStreamColor() {
+            const theme = document.documentElement.getAttribute('data-theme');
+            return theme === 'dark' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(59, 130, 246, 0.8)';
+        }
+
+        function spawnStreamParticles(x, y, count = 2) {
+            const color = getStreamColor();
+            for (let i = 0; i < count; i++) {
+                streamParticles.push(new StarStreamParticle(x, y, color));
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            spawnStreamParticles(e.clientX, e.clientY);
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                spawnStreamParticles(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        window.addEventListener('mousedown', (e) => {
+            spawnStreamParticles(e.clientX, e.clientY, 12);
+        });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                spawnStreamParticles(e.touches[0].clientX, e.touches[0].clientY, 12);
+            }
+        }, { passive: true });
+
+        function animateStarStream() {
+            starCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+            handleStreamParticles();
+            requestAnimationFrame(animateStarStream);
+        }
+
+        animateStarStream();
     </script>
 </body>
 </html>
